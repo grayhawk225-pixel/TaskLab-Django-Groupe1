@@ -1,6 +1,9 @@
 from django.db import models
 
+
 class Tache(models.Model):
+    """Tâche à réaliser, avec un statut, une priorité et une date de création."""
+
     STATUTS = [
         ("A_FAIRE", "À faire"),
         ("EN_COURS", "En cours"),
@@ -12,5 +15,14 @@ class Tache(models.Model):
     priorite = models.PositiveSmallIntegerField(default=2)
     date_creation = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        ordering = ["-date_creation"]
+        verbose_name = "Tâche"
+        verbose_name_plural = "Tâches"
+
     def __str__(self):
         return self.titre
+
+    def est_terminee(self):
+        """Retourne True si la tâche a le statut TERMINEE."""
+        return self.statut == "TERMINEE"
